@@ -18,4 +18,22 @@ return <main><header><div className="shell nav"><img src="/tmpl_black.svg"/><nav
 {step===3&&<><small>03 / TYPOGRAPHY</small><h2>Choose your type.</h2><p>Start with dependable PowerPoint-safe font choices.</p><label>Heading font</label><select value={hf} onChange={e=>setHf(e.target.value)}>{fonts.map(x=><option key={x}>{x}</option>)}</select><label>Body font</label><select value={bf} onChange={e=>setBf(e.target.value)}>{fonts.map(x=><option key={x}>{x}</option>)}</select></>}
 {step===4&&<><small>04 / PREVIEW</small><h2>This is your TMPL.</h2><p>Preview your brand setup before checkout.</p><Preview logo={logo} company={company} colors={colors} hf={hf} bf={bf}/><div className="summary"><div><small>POWERPOINT TEMPLATE</small><b>30 layouts · Fully editable</b></div><strong>$99</strong></div><button className="checkout" onClick={()=>alert('Next integration: Stripe → PowerPoint generation → download.')}>Continue to checkout →</button></>}
 </div><div className="live"><small>LIVE PREVIEW</small><Preview logo={logo} company={company} colors={colors} hf={hf} bf={bf}/></div></div><div className="bbot"><span>No account required. Pay once and download your TMPL.</span><div><button className="back" disabled={step===1} onClick={()=>setStep(step-1)}>← Back</button>{step<4&&<button onClick={()=>setStep(step+1)}>Continue →</button>}</div></div></div></div>}</main>}
-function Preview({logo,company,colors,hf='Arial',bf='Arial'}){return <div className="preview"><div className="pv" style={{fontFamily:bf}}><img src={logo}/><h5 style={{fontFamily:hf}}>Designed around<br/>your brand.</h5><small>{company}</small><i style={{background:colors[0]}}/></div><div className="pv" style={{background:colors[1],fontFamily:bf}}><small>{company}</small><h5 style={{fontFamily:hf}}>One clear<br/>message.</h5><i style={{background:colors[0]}}/></div><div className="pv darkpv" style={{background:colors[0],fontFamily:bf}}><small>{company}</small><h5 style={{fontFamily:hf}}>Numbers that<br/>stand out.</h5><i style={{background:colors[1]}}/></div></div>}
+function Preview({logo,company,primary,accent,heading,body}){
+ const hf = webFont[heading] || 'Arial, Helvetica, sans-serif';
+ const bf = webFont[body] || 'Arial, Helvetica, sans-serif';
+ const slides = [
+   {bg:'#ffffff', fg:'#111111', bar:primary, title:'Designed around your brand.'},
+   {bg:accent, fg:'#111111', bar:primary, title:'One clear message.'},
+   {bg:primary, fg:'#ffffff', bar:accent, title:'Numbers that stand out.'}
+ ];
+ return <div className="previewStrip">
+   {slides.map((sl,i)=>
+     <div className="pv" key={i} style={{background:sl.bg,color:sl.fg,fontFamily:bf}}>
+       <div className="pvLogo"><img src={logo} alt="Company logo"/></div>
+       <h5 style={{fontFamily:hf}}>{sl.title}</h5>
+       <small>{company}</small>
+       <i style={{background:sl.bar}}/>
+     </div>
+   )}
+ </div>
+}

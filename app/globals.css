@@ -10,3 +10,23 @@
 .liveSide .pv h5{font-size:clamp(12px,1vw,17px);margin-top:12px}
 .liveSide .pv i{left:10px;bottom:9px;height:3px}
 .liveSide .pv small{font-size:5px}
+
+/* v3: consistent customer logo + compact, non-broken previews */
+.pv{display:flex;flex-direction:column;align-items:flex-start}
+.pvLogo{height:20px;width:72px;display:flex;align-items:flex-start;justify-content:flex-start}
+.pvLogo img{display:block!important;width:auto!important;height:auto!important;max-width:72px!important;max-height:18px!important;object-fit:contain!important;object-position:left top!important}
+.pv h5{max-width:88%;overflow:visible}
+.liveSide{padding:22px;overflow:hidden!important}
+.liveSide .previewStrip{display:grid!important;grid-template-columns:1fr!important;gap:8px!important;padding:10px!important;margin-top:14px!important}
+.liveSide .pv{aspect-ratio:16/9!important;padding:10px!important;min-height:0!important}
+.liveSide .pvLogo{height:15px;width:60px}
+.liveSide .pvLogo img{max-width:60px!important;max-height:14px!important}
+.liveSide .pv h5{font-size:15px!important;line-height:1.02!important;margin:11px 0 0!important}
+.liveSide .pv small{font-size:5px!important;margin-top:3px}
+.liveSide .pv i{left:10px!important;bottom:9px!important;height:3px!important}
+.previewPage>.previewStrip{gap:8px;padding:14px}
+.previewPage>.previewStrip .pv{padding:10px}
+.previewPage>.previewStrip .pvLogo{height:14px;width:52px}
+.previewPage>.previewStrip .pvLogo img{max-width:52px!important;max-height:13px!important}
+.previewPage>.previewStrip .pv h5{font-size:12px!important;line-height:1.02!important;margin:10px 0 0!important}
+.previewPage>.previewStrip .pv small{font-size:5px!important}
