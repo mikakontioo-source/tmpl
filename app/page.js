@@ -2,6 +2,15 @@
 import {useRef,useState} from 'react';
 const P=[['#111111','#D8FF36','#F5F4EE','#777777','#FFFFFF','#D7D7D0'],['#12263A','#4EA5D9','#F4F1EA','#C9D6DF','#FFFFFF','#315B7D'],['#332C2F','#E7C8A0','#F7F2EA','#A5A58D','#FFFFFF','#6B705C']];
 const fonts=['Arial','Aptos','Calibri','Georgia','Times New Roman','Trebuchet MS','Verdana'];
+const fontStack=(name,heading=false)=>({
+  'Arial':'Arial, Helvetica, sans-serif',
+  'Aptos': heading ? '"Aptos Display", Aptos, "Segoe UI", Arial, sans-serif' : 'Aptos, "Segoe UI", Arial, sans-serif',
+  'Calibri':'Calibri, "Segoe UI", Arial, sans-serif',
+  'Georgia':'Georgia, "Times New Roman", serif',
+  'Times New Roman':'"Times New Roman", Times, serif',
+  'Trebuchet MS':'"Trebuchet MS", Arial, sans-serif',
+  'Verdana':'Verdana, Arial, sans-serif'
+}[name] || 'Arial, Helvetica, sans-serif');
 export default function Page(){const [open,setOpen]=useState(false),[step,setStep]=useState(1),[company,setCompany]=useState('Your Company'),[logo,setLogo]=useState('/tmpl_black.svg'),[colors,setColors]=useState(P[0]),[hf,setHf]=useState('Arial'),[bf,setBf]=useState('Arial');const file=useRef();
 const upload=e=>{let f=e.target.files?.[0];if(f)setLogo(URL.createObjectURL(f))};const color=(i,v)=>{let n=[...colors];n[i]=v.toUpperCase();setColors(n)};
 return <main><header><div className="shell nav"><img src="/tmpl_black.svg"/><nav><a href="#how">How it works</a><a href="#layouts">Layouts</a><a href="#included">What's included</a><button onClick={()=>setOpen(true)}>Create your TMPL →</button></nav></div></header>
@@ -18,22 +27,27 @@ return <main><header><div className="shell nav"><img src="/tmpl_black.svg"/><nav
 {step===3&&<><small>03 / TYPOGRAPHY</small><h2>Choose your type.</h2><p>Start with dependable PowerPoint-safe font choices.</p><label>Heading font</label><select value={hf} onChange={e=>setHf(e.target.value)}>{fonts.map(x=><option key={x}>{x}</option>)}</select><label>Body font</label><select value={bf} onChange={e=>setBf(e.target.value)}>{fonts.map(x=><option key={x}>{x}</option>)}</select></>}
 {step===4&&<><small>04 / PREVIEW</small><h2>This is your TMPL.</h2><p>Preview your brand setup before checkout.</p><Preview logo={logo} company={company} colors={colors} hf={hf} bf={bf}/><div className="summary"><div><small>POWERPOINT TEMPLATE</small><b>30 layouts · Fully editable</b></div><strong>$99</strong></div><button className="checkout" onClick={()=>alert('Next integration: Stripe → PowerPoint generation → download.')}>Continue to checkout →</button></>}
 </div><div className="live"><small>LIVE PREVIEW</small><Preview logo={logo} company={company} colors={colors} hf={hf} bf={bf}/></div></div><div className="bbot"><span>No account required. Pay once and download your TMPL.</span><div><button className="back" disabled={step===1} onClick={()=>setStep(step-1)}>← Back</button>{step<4&&<button onClick={()=>setStep(step+1)}>Continue →</button>}</div></div></div></div>}</main>}
-function Preview({logo,company,primary,accent,heading,body}){
- const hf = webFont[heading] || 'Arial, Helvetica, sans-serif';
- const bf = webFont[body] || 'Arial, Helvetica, sans-serif';
- const slides = [
-   {bg:'#ffffff', fg:'#111111', bar:primary, title:'Designed around your brand.'},
-   {bg:accent, fg:'#111111', bar:primary, title:'One clear message.'},
-   {bg:primary, fg:'#ffffff', bar:accent, title:'Numbers that stand out.'}
- ];
- return <div className="previewStrip">
-   {slides.map((sl,i)=>
-     <div className="pv" key={i} style={{background:sl.bg,color:sl.fg,fontFamily:bf}}>
-       <div className="pvLogo"><img src={logo} alt="Company logo"/></div>
-       <h5 style={{fontFamily:hf}}>{sl.title}</h5>
-       <small>{company}</small>
-       <i style={{background:sl.bar}}/>
-     </div>
-   )}
- </div>
+function Preview({logo,company,colors,hf='Arial',bf='Arial'}){
+  const headingFont=fontStack(hf,true);
+  const bodyFont=fontStack(bf,false);
+  const Logo=({dark=false})=><span className={`pvLogoWrap${dark?' onDark':''}`}><img className="pvLogo" src={logo} alt=""/></span>;
+  return <div className="preview">
+    <div className="pv" style={{fontFamily:bodyFont}}>
+      <Logo/>
+      <h5 style={{fontFamily:headingFont}}>Designed around<br/>your brand.</h5>
+      <small>{company}</small><i style={{background:colors[0]}}/>
+    </div>
+    <div className="pv" style={{background:colors[1],fontFamily:bodyFont}}>
+      <Logo/>
+      <small className="pvCompany">{company}</small>
+      <h5 style={{fontFamily:headingFont}}>One clear<br/>message.</h5>
+      <i style={{background:colors[0]}}/>
+    </div>
+    <div className="pv darkpv" style={{background:colors[0],fontFamily:bodyFont}}>
+      <Logo dark/>
+      <small className="pvCompany">{company}</small>
+      <h5 style={{fontFamily:headingFont}}>Numbers that<br/>stand out.</h5>
+      <i style={{background:colors[1]}}/>
+    </div>
+  </div>
 }

@@ -22,3 +22,10 @@ Import the project/repository into Vercel. No environment variables are needed y
 3. Add Stripe Checkout
 4. Store order data
 5. Download + transactional email
+
+## v3 preview fixes
+- Uploaded logo is shown on all three preview slides.
+- Dark preview slide adds a light logo backing so dark logos remain visible.
+- PowerPoint-safe font stacks prevent Aptos/Calibri from falling back to browser-default Times New Roman.
+- Aptos headings prefer Aptos Display when available.
+- Live preview sizing is constrained so all three 16:9 previews fit the builder better.
